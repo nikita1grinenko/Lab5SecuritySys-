@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <main id="main-holder">
+        <h1 id="register-header">Register</h1>
+
+        <div id="register-error-msg-holder">
+            <p id="register-error-msg">Registration failed. Please try again.</p>
+        </div>
+
+        <form id="register-form" action="/api/register" method="post">
+            <input type="text" name="email" id="username-field" class="register-form-field" placeholder="Email">
+            <input type="password" name="password" id="password-field" class="register-form-field" placeholder="Password">
+            <input type="submit" value="Register" id="register-form-submit">
+
+            <a href="/login">Login</a>
+        </form>
+
+        
+
+    </main>
+</body>
+
+<style>
+    html {
+        height: 100%;
+    }
+
+    body {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        background-color: #3a3a3a;
+    }
+
+    #logout {
+        opacity: 0;
+    }
+
+    #main-holder {
+        width: 50%;
+        height: 70%;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        background-color: white;
+        border-radius: 7px;
+        box-shadow: 0px 0px 5px 2px black;
+    }
+
+    #register-error-msg-holder {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+    }
+
+    #register-error-msg {
+        width: 23%;
+        text-align: center;
+        margin: 0;
+        padding: 5px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #8a0000;
+        border: 1px solid #8a0000;
+        background-color: #e58f8f;
+        opacity: 0;
+    }
+
+    #error-msg-second-line {
+        display: block;
+    }
+
+    #register-form {
+        align-self: flex-start;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+    }
+
+    .register-form-field::placeholder {
+        color: #3a3a3a;
+    }
+
+    .register-form-field {
+        border: none;
+        border-bottom: 1px solid #3a3a3a;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        outline: none;
+        padding: 0px 0px 5px 5px;
+    }
+
+    #register-form-submit {
+        width: 100%;
+        padding: 7px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        background-color: #3a3a3a;
+        cursor: pointer;
+        outline: none;
+    }
+</style>
+
+<script>
+
+    const registerForm = document.getElementById("register-form");
+    const registerButton = document.getElementById("register-form-submit");
+    const registerErrorMsg = document.getElementById("register-error-msg");
+    
+    const session = sessionStorage.getItem('session');
+
+
+    registerButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        const email = registerForm.email.value;
+        const password = registerForm.password.value;
+
+
+        axios({
+            method: 'post',
+            url: '/api/register',
+            data: {
+                email,
+                password
+            }
+        }).then((response) => {
+            const { username } =  login;
+
+            sessionStorage.setItem('session', JSON.stringify(response.data));
+
+            window.location.href = '/';
+        }).catch((response) => {
+            registerErrorMsg.style.opacity = 1;
+        });
+    })
+</script>
+
+</html>
